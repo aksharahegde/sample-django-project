@@ -1,0 +1,208 @@
+{% load i18n %}
+
+<div class="category-analytics">
+  <div class="analytics-overview">
+    <h4>Category Overview</h4>
+    <div class="category-grid">
+      {% for category in module.children.0.categories %}
+      <div class="category-card">
+        <div class="category-header">
+          <span
+            class="category-color"
+            style="background-color: {{ category.color }};"
+          ></span>
+          <span class="category-name">{{ category.name }}</span>
+        </div>
+        <div class="category-stats">
+          <div class="stat">
+            <span class="stat-number">{{ category.question_count }}</span>
+            <span class="stat-label">Questions</span>
+          </div>
+          <div class="stat">
+            <span class="stat-number">{{ category.poll_count }}</span>
+            <span class="stat-label">Polls</span>
+          </div>
+          <div class="stat">
+            <span class="stat-number">{{ category.total_items }}</span>
+            <span class="stat-label">Total</span>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="analytics-details">
+    <div class="detail-section">
+      <h4>Popular Tags</h4>
+      <ul class="tag-list">
+        {% for tag in module.children.0.popular_tags %}
+        <li>
+          <span class="tag-name">{{ tag.name }}</span>
+          <span class="tag-usage">{{ tag.total_usage }} uses</span>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="detail-section">
+      <h4>Most Active Categories</h4>
+      <ul class="active-category-list">
+        {% for category in module.children.0.active_categories %}
+        <li>
+          <span class="category-name">{{ category.name }}</span>
+          <div class="activity-stats">
+            <span class="activity-stat"
+              >{{ category.recent_questions }} recent questions</span
+            >
+            <span class="activity-stat"
+              >{{ category.recent_polls }} recent polls</span
+            >
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+
+<style>
+  .category-analytics {
+    padding: 15px;
+  }
+
+  .analytics-overview h4 {
+    margin: 0 0 15px 0;
+    font-size: 14px;
+    color: #495057;
+    font-weight: 600;
+  }
+
+  .category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 25px;
+  }
+
+  .category-card {
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .category-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+
+  .category-color {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    margin-right: 8px;
+    border: 1px solid #ccc;
+  }
+
+  .category-name {
+    font-weight: 600;
+    color: #495057;
+    font-size: 14px;
+  }
+
+  .category-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-number {
+    display: block;
+    font-size: 18px;
+    font-weight: bold;
+    color: #007bff;
+  }
+
+  .stat-label {
+    display: block;
+    font-size: 10px;
+    color: #6c757d;
+    margin-top: 2px;
+  }
+
+  .analytics-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+  }
+
+  .detail-section h4 {
+    margin: 0 0 15px 0;
+    font-size: 14px;
+    color: #495057;
+    font-weight: 600;
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 8px;
+  }
+
+  .tag-list,
+  .active-category-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .tag-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+  }
+
+  .tag-name {
+    font-size: 12px;
+    color: #495057;
+    font-weight: 500;
+  }
+
+  .tag-usage {
+    font-size: 11px;
+    color: #6c757d;
+    background: #e9ecef;
+    padding: 2px 6px;
+    border-radius: 12px;
+  }
+
+  .active-category-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+  }
+
+  .active-category-list .category-name {
+    font-size: 12px;
+    color: #495057;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .activity-stats {
+    display: flex;
+    gap: 10px;
+  }
+
+  .activity-stat {
+    font-size: 10px;
+    color: #6c757d;
+    background: #f8f9fa;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+</style>

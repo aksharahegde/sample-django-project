@@ -1,0 +1,167 @@
+{% load i18n %}
+
+<div class="recent-activity">
+  <div class="activity-sections">
+    <div class="activity-section">
+      <h4>Recent Users</h4>
+      <ul class="activity-list">
+        {% for user in module.children.0.recent_users %}
+        <li>
+          <a
+            href="/admin/polls/user/{{ user.id }}/change/"
+            class="activity-link"
+          >
+            {{ user.username }}
+          </a>
+          <span class="activity-time">{{ user.created_at|timesince }} ago</span>
+        </li>
+        {% empty %}
+        <li>No recent users</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="activity-section">
+      <h4>Recent Questions</h4>
+      <ul class="activity-list">
+        {% for question in module.children.0.recent_questions %}
+        <li>
+          <a
+            href="/admin/polls/question/{{ question.id }}/change/"
+            class="activity-link"
+          >
+            {{ question.title|truncatechars:40 }}
+          </a>
+          <span class="activity-time"
+            >{{ question.created_at|timesince }} ago</span
+          >
+        </li>
+        {% empty %}
+        <li>No recent questions</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="activity-section">
+      <h4>Recent Polls</h4>
+      <ul class="activity-list">
+        {% for poll in module.children.0.recent_polls %}
+        <li>
+          <a
+            href="/admin/polls/poll/{{ poll.id }}/change/"
+            class="activity-link"
+          >
+            {{ poll.title|truncatechars:40 }}
+          </a>
+          <span class="activity-time">{{ poll.created_at|timesince }} ago</span>
+        </li>
+        {% empty %}
+        <li>No recent polls</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="activity-section">
+      <h4>Recent Quiz Attempts</h4>
+      <ul class="activity-list">
+        {% for quiz in module.children.0.recent_quizzes %}
+        <li>
+          <a
+            href="/admin/polls/quiz/{{ quiz.id }}/change/"
+            class="activity-link"
+          >
+            {{ quiz.user.username }} - {{ quiz.question.title|truncatechars:30
+            }}
+          </a>
+          <span class="activity-time">{{ quiz.started_at|timesince }} ago</span>
+        </li>
+        {% empty %}
+        <li>No recent quiz attempts</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="activity-section">
+      <h4>Recent Votes</h4>
+      <ul class="activity-list">
+        {% for vote in module.children.0.recent_votes %}
+        <li>
+          <a
+            href="/admin/polls/poll/{{ vote.poll.id }}/change/"
+            class="activity-link"
+          >
+            {{ vote.poll.title|truncatechars:30 }}
+          </a>
+          <span class="activity-time">{{ vote.voted_at|timesince }} ago</span>
+        </li>
+        {% empty %}
+        <li>No recent votes</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+
+<style>
+  .recent-activity {
+    padding: 15px;
+  }
+
+  .activity-sections {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+  }
+
+  .activity-section {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 15px;
+    background: #f8f9fa;
+  }
+
+  .activity-section h4 {
+    margin: 0 0 15px 0;
+    font-size: 14px;
+    color: #495057;
+    font-weight: 600;
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 8px;
+  }
+
+  .activity-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .activity-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+  }
+
+  .activity-list li:last-child {
+    border-bottom: none;
+  }
+
+  .activity-link {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 12px;
+    flex: 1;
+    margin-right: 10px;
+  }
+
+  .activity-link:hover {
+    text-decoration: underline;
+  }
+
+  .activity-time {
+    font-size: 10px;
+    color: #6c757d;
+    white-space: nowrap;
+  }
+</style>

@@ -1,0 +1,147 @@
+{% load i18n %}
+
+<div class="charts-container">
+  <div class="chart-section">
+    <h4>User Registration Trend (30 days)</h4>
+    <div id="user-registration-chart" class="chart-placeholder"></div>
+  </div>
+
+  <div class="chart-section">
+    <h4>Question Difficulty Distribution</h4>
+    <div id="difficulty-chart" class="chart-placeholder"></div>
+  </div>
+
+  <div class="chart-section">
+    <h4>Quiz Accuracy by Category</h4>
+    <div id="category-accuracy-chart" class="chart-placeholder"></div>
+  </div>
+
+  <div class="chart-section">
+    <h4>Poll Voting Activity (7 days)</h4>
+    <div id="voting-activity-chart" class="chart-placeholder"></div>
+  </div>
+</div>
+
+<style>
+  .charts-container {
+    padding: 15px;
+  }
+
+  .chart-section {
+    margin-bottom: 30px;
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 20px;
+  }
+
+  .chart-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+  }
+
+  .chart-section h4 {
+    margin: 0 0 15px 0;
+    font-size: 14px;
+    color: #495057;
+    font-weight: 600;
+  }
+
+  .chart-placeholder {
+    height: 200px;
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6c757d;
+    font-size: 12px;
+    position: relative;
+  }
+
+  .chart-placeholder::before {
+    content: "📊 Chart visualization would appear here";
+    text-align: center;
+  }
+</style>
+
+<script>
+  // Simple chart implementation using basic JavaScript
+  // In a real implementation, you would use Chart.js, D3.js, or similar
+
+  document.addEventListener('DOMContentLoaded', function() {
+      // User registration chart
+      const userData = {{ module.children.0.user_registration_data|safe }};
+      createLineChart('user-registration-chart', userData, 'Users Registered');
+
+      // Difficulty distribution chart
+      const difficultyData = {{ module.children.0.difficulty_data|safe }};
+      createBarChart('difficulty-chart', difficultyData, 'difficulty', 'count');
+
+      // Category accuracy chart
+      const categoryData = {{ module.children.0.category_accuracy|safe }};
+      createBarChart('category-accuracy-chart', categoryData, 'category', 'accuracy');
+
+      // Voting activity chart
+      const votingData = {{ module.children.0.voting_activity|safe }};
+      createLineChart('voting-activity-chart', votingData, 'Votes Cast');
+  });
+
+  function createLineChart(containerId, data, label) {
+      const container = document.getElementById(containerId);
+      if (!container || !data || data.length === 0) return;
+
+      const maxValue = Math.max(...data.map(d => d.count || d.votes || 0));
+      const height = 200;
+      const width = container.offsetWidth - 40;
+
+      let chartHtml = '<svg width="' + width + '" height="' + height + '" style="border: none;">';
+
+      // Draw simple line chart
+      if (data.length > 1) {
+          const points = data.map((d, i) => {
+              const x = (i / (data.length - 1)) * width;
+              const y = height - ((d.count || d.votes || 0) / maxValue) * height;
+              return x + ',' + y;
+          }).join(' L');
+
+          chartHtml += '<polyline points="' + points + '" fill="none" stroke="#007bff" stroke-width="2"/>';
+
+          // Draw data points
+          data.forEach((d, i) => {
+              const x = (i / (data.length - 1)) * width;
+              const y = height - ((d.count || d.votes || 0) / maxValue) * height;
+              chartHtml += '<circle cx="' + x + '" cy="' + y + '" r="3" fill="#007bff"/>';
+          });
+      }
+
+      chartHtml += '</svg>';
+      container.innerHTML = chartHtml;
+  }
+
+  function createBarChart(containerId, data, labelField, valueField) {
+      const container = document.getElementById(containerId);
+      if (!container || !data || data.length === 0) return;
+
+      const maxValue = Math.max(...data.map(d => d[valueField] || 0));
+      const height = 200;
+      const width = container.offsetWidth - 40;
+      const barWidth = width / data.length - 10;
+
+      let chartHtml = '<svg width="' + width + '" height="' + height + '" style="border: none;">';
+
+      data.forEach((d, i) => {
+          const barHeight = ((d[valueField] || 0) / maxValue) * height;
+          const x = i * (width / data.length) + 5;
+          const y = height - barHeight;
+
+          chartHtml += '<rect x="' + x + '" y="' + y + '" width="' + barWidth + '" height="' + barHeight + '" fill="#28a745"/>';
+
+          // Add labels
+          chartHtml += '<text x="' + (x + barWidth/2) + '" y="' + (height + 15) + '" text-anchor="middle" font-size="10" fill="#6c757d">' +
+                       (d[labelField] || 'N/A') + '</text>';
+      });
+
+      chartHtml += '</svg>';
+      container.innerHTML = chartHtml;
+  }
+</script>

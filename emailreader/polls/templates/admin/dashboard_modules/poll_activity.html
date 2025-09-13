@@ -1,0 +1,233 @@
+{% load i18n %}
+
+<div class="poll-activity">
+  <div class="activity-metrics">
+    <div class="metric-card">
+      <div class="metric-number">{{ module.children.0.total_polls }}</div>
+      <div class="metric-label">Total Polls</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-number">{{ module.children.0.active_polls }}</div>
+      <div class="metric-label">Active</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-number">{{ module.children.0.closed_polls }}</div>
+      <div class="metric-label">Closed</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-number">{{ module.children.0.total_votes }}</div>
+      <div class="metric-label">Total Votes</div>
+    </div>
+  </div>
+
+  <div class="activity-details">
+    <div class="detail-section">
+      <h4>Recent Activity</h4>
+      <div class="recent-metrics">
+        <div class="metric-item">
+          <span class="metric-label">New Polls (30d):</span>
+          <span class="metric-value"
+            >{{ module.children.0.new_polls_30d }}</span
+          >
+        </div>
+        <div class="metric-item">
+          <span class="metric-label">Recent Votes:</span>
+          <span class="metric-value">{{ module.children.0.recent_votes }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="detail-section">
+      <h4>Vote Types</h4>
+      <div class="vote-types">
+        <div class="vote-type">
+          <span class="vote-label">Anonymous:</span>
+          <span class="vote-count"
+            >{{ module.children.0.anonymous_votes }}</span
+          >
+        </div>
+        <div class="vote-type">
+          <span class="vote-label">Registered:</span>
+          <span class="vote-count"
+            >{{ module.children.0.registered_votes }}</span
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="poll-status">
+    <h4>Poll Status Distribution</h4>
+    <ul class="status-list">
+      {% for status in module.children.0.status_stats %}
+      <li>
+        <span class="status-name">{{ status.status|title }}</span>
+        <span class="status-count">{{ status.count }}</span>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div class="popular-polls">
+    <h4>Most Popular Polls</h4>
+    <ul class="poll-list">
+      {% for poll in module.children.0.popular_polls %}
+      <li>
+        <a href="/admin/polls/poll/{{ poll.id }}/change/" class="poll-link">
+          {{ poll.title|truncatechars:50 }}
+        </a>
+        <span class="vote-count">{{ poll.vote_count }} votes</span>
+      </li>
+      {% empty %}
+      <li>No polls available</li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div class="category-breakdown">
+    <h4>Top Categories</h4>
+    <ul class="category-list">
+      {% for cat in module.children.0.category_stats %}
+      <li>
+        <span class="category-name"
+          >{{ cat.category__name|default:"Uncategorized" }}</span
+        >
+        <span class="category-count">{{ cat.count }}</span>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
+<style>
+  .poll-activity {
+    padding: 15px;
+  }
+
+  .activity-metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .metric-card {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 12px;
+    text-align: center;
+  }
+
+  .metric-number {
+    font-size: 20px;
+    font-weight: bold;
+    color: #17a2b8;
+  }
+
+  .metric-label {
+    font-size: 11px;
+    color: #6c757d;
+    margin-top: 4px;
+  }
+
+  .activity-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+
+  .detail-section h4 {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+    color: #495057;
+  }
+
+  .recent-metrics,
+  .vote-types {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .metric-item,
+  .vote-type {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+  }
+
+  .metric-label,
+  .vote-label {
+    color: #6c757d;
+  }
+
+  .metric-value,
+  .vote-count {
+    font-weight: bold;
+    color: #17a2b8;
+  }
+
+  .poll-status,
+  .popular-polls,
+  .category-breakdown {
+    border-top: 1px solid #dee2e6;
+    padding-top: 15px;
+    margin-bottom: 15px;
+  }
+
+  .poll-status h4,
+  .popular-polls h4,
+  .category-breakdown h4 {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+    color: #495057;
+  }
+
+  .status-list,
+  .poll-list,
+  .category-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .status-list li,
+  .poll-list li,
+  .category-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+  }
+
+  .status-name,
+  .category-name {
+    font-size: 12px;
+    color: #6c757d;
+  }
+
+  .status-count,
+  .category-count {
+    font-weight: bold;
+    color: #17a2b8;
+  }
+
+  .poll-link {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 12px;
+  }
+
+  .poll-link:hover {
+    text-decoration: underline;
+  }
+
+  .vote-count {
+    font-size: 11px;
+    color: #28a745;
+    font-weight: bold;
+  }
+</style>
