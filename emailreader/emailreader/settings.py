@@ -31,7 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    # 'jet.dashboard',
+    'jet.dashboard',
     'jet',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -43,8 +43,8 @@ INSTALLED_APPS = [
 ]
 
 # Django Jet Dashboard Configuration
-JET_INDEX_DASHBOARD = 'polls.dashboard.CustomIndexDashboard'
-JET_APP_INDEX_DASHBOARD = 'polls.dashboard.CustomAppDashboard'
+# JET_INDEX_DASHBOARD = 'polls.dashboard.CustomIndexDashboard'
+# JET_APP_INDEX_DASHBOARD = 'polls.dashboard.CustomAppDashboard'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

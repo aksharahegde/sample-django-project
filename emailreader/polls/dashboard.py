@@ -16,26 +16,26 @@ from .dashboard_modules import (
 
 class CustomIndexDashboard(Dashboard):
     """Custom dashboard for the main admin index page"""
-    
+
     columns = 3
-    
+
     def init_with_context(self, context):
         """Initialize the dashboard with modules"""
-        
+
         # Top row - Key metrics
         self.children.append(PerformanceMetricsModule())
         self.children.append(UserStatsModule())
         self.children.append(QuestionStatsModule())
-        
+
         # Second row - Analytics
         self.children.append(QuizPerformanceModule())
         self.children.append(PollActivityModule())
         self.children.append(CategoryAnalyticsModule())
-        
+
         # Third row - Charts and recent activity
         self.children.append(ChartModule())
         self.children.append(RecentActivityModule())
-        
+
         # Quick links module
         self.children.append(LinkList(
             title='Quick Links',
@@ -76,12 +76,12 @@ class CustomIndexDashboard(Dashboard):
 
 class CustomAppDashboard(Dashboard):
     """Custom dashboard for the polls app"""
-    
+
     columns = 2
-    
+
     def init_with_context(self, context):
         """Initialize the app dashboard with modules"""
-        
+
         # App-specific modules
         self.children.append(UserStatsModule())
         self.children.append(QuestionStatsModule())
@@ -89,7 +89,7 @@ class CustomAppDashboard(Dashboard):
         self.children.append(PollActivityModule())
         self.children.append(ChartModule())
         self.children.append(RecentActivityModule())
-        
+
         # App navigation links
         self.children.append(LinkList(
             title='Polls App Navigation',
@@ -128,6 +128,6 @@ class CustomAppDashboard(Dashboard):
         ))
 
 
-# Register the dashboards
-Dashboard.register(CustomIndexDashboard)
-Dashboard.register(CustomAppDashboard)
+# # Register the dashboards
+# Dashboard.register(CustomIndexDashboard)
+# Dashboard.register(CustomAppDashboard)

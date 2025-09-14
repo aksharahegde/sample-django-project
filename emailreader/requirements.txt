@@ -2,3 +2,4 @@ Django==5.1.12
 FeedParser
 psutil
 coverage
+Pillow
